@@ -1,0 +1,343 @@
+#include <iostream>
+#include <string>
+#include <limits>
+
+using namespace std;
+
+const int MAX_ORDERS = 15;
+
+void clearConsole()
+{
+    system("cls");
+}
+void waitForEnter()
+{
+    cout << "\n\nPress Enter to continue...\n";
+    cout.flush();
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    cin.get();
+    clearConsole();
+}
+class Stack
+{
+private:
+    string orders[MAX_ORDERS];
+    float prices[MAX_ORDERS];
+    int numOrders;
+
+public:
+    float totalPrice;
+    Stack()
+    {
+        numOrders = 0;
+        totalPrice = 0.0;
+        prices[0] = 7.5;
+        prices[1] = 15;
+        prices[2] = 20;
+        prices[3] = 20;
+        prices[4] = 27;
+        prices[5] = 15;
+        prices[6] = 30;
+        prices[7] = 20;
+        prices[8] = 15;
+        prices[9] = 15;
+        prices[10] = 20;
+        prices[11] = 10;
+    }
+
+    void push(string order, float price)
+    {
+        clearConsole();
+        if (isFull())
+        {
+            cout << "Maximum orders reached. Cannot place more orders.\n";
+            return;
+        }
+        orders[numOrders] = order;
+        prices[numOrders] = price;
+        numOrders++;
+        totalPrice += price;
+        cout << "Order placed successfully: " << order << " (Price: " << price << " EGP)\n";
+    }
+
+    string popLast()
+    {
+        string c;
+        string order;
+        float price;
+
+        if (isEmpty())
+        {
+            cout << "No orders to process.\n";
+            waitForEnter();
+            return "";
+        }
+        order = orders[numOrders - 1];
+        cout << "Are you sure you want to delete the last order ? (last order is : " << order << " )\nEnter Y/y for confirming or anything else to get back: ";
+        cin >> c;
+        if (c == "Y" || c == "y")
+        {
+            numOrders--;
+            order = orders[numOrders];
+            price = prices[numOrders];
+            totalPrice -= price;
+            cout << "Deleted last order: " << order << " (Price: " << price << " EGP)\n";
+            waitForEnter();
+        }
+        else
+        {
+            cout << "nothing effect the orders";
+            waitForEnter();
+        }
+        clearConsole();
+        return order;
+    }
+
+    void popAll()
+    {
+        if (isEmpty())
+        {
+            cout << "No orders to process.\n";
+            waitForEnter();
+            return;
+        }
+        string c;
+        string order = orders[numOrders - 1];
+        float price = prices[numOrders - 1];
+
+        cout << "Are you sure you want to delete all the orders ? there is no return for this choice\nEnter Y/y for confirming or anything else to get back: ";
+        cin >> c;
+        if (c == "Y" || c == "y")
+        {
+            numOrders = 0;
+            order = orders[numOrders];
+            price = prices[numOrders];
+            totalPrice = 0;
+            cout << "All the orders have been deleted successfully.\n";
+            waitForEnter();
+        }
+        else
+        {
+            cout << "nothing effect the orders";
+            waitForEnter();
+        }
+        return;
+    }
+
+    bool isEmpty()
+    {
+        return (numOrders == 0);
+    }
+
+    bool isFull()
+    {
+        return (numOrders == MAX_ORDERS);
+    }
+
+    void display()
+    {
+        if (isEmpty())
+        {
+            cout << "No orders to display.\n";
+
+            return;
+        }
+        cout << "Orders in the stack:\n";
+        for (int i = numOrders - 1; i >= 0; --i)
+        {
+            cout << orders[i] << endl;
+        }
+        cout << "Total Price: " << totalPrice << " EGP";
+    }
+};
+
+int main()
+{
+    Stack stack;
+    int choice;
+
+    do
+    {
+        cout << "\nCafe Cashier System Menu:                           "
+             << "Total price for the current order is : " << stack.totalPrice << " EGP\n";
+        cout << "1. Place Order\n";
+        cout << "2. Display Orders\n";
+        cout << "3. Reset Orders\n";
+        cout << "4. Delete Last Order\n";
+        cout << "5. Exit\n";
+        cout << "Enter your choice: ";
+
+        string input;
+        cin >> input;
+
+        try
+        {
+            choice = stoi(input);
+            switch (choice)
+            {
+            case 1:
+            {
+                clearConsole();
+                while (true)
+                {
+                    cout << endl
+                         << "Menu:                                               Total price for the current order is : " << stack.totalPrice << " EGP\n";
+                    cout << "1. Tea (7.5 )\n";
+                    cout << "2. Coffee (15 )\n";
+                    cout << "3. Nescafe (20 )\n";
+                    cout << "4. Sahlab (20 )\n";
+                    cout << "5. Sahlab nuts (27 )\n";
+                    cout << "6. Anise (15 )\n";
+                    cout << "7. Mango Drink (30 )\n";
+                    cout << "8. Grape Drink (20 )\n";
+                    cout << "9. Tea and Milk (15 )\n";
+                    cout << "10. Pepsi - Cola  Drink (15 )\n";
+                    cout << "11. Shesha Fruits (20 )\n";
+                    cout << "12. Shesha (10 )\n";
+                    cout << "0. Done placing orders\n";
+                    cout << "Enter product number to add to order (0 to finish): ";
+
+                    string inputp;
+                    cin >> inputp;
+                    int productChoice = stoi(inputp);
+
+                    if (productChoice == 0)
+                    {
+                        clearConsole();
+                        break;
+                    }
+                    if (productChoice < 1 || productChoice > 12)
+                    {
+                        clearConsole();
+                        cout << "Invalid product choice.\n";
+
+                        continue;
+                    }
+
+                    string product;
+                    switch (productChoice)
+                    {
+                    case 1:
+                        product = "Tea";
+                        break;
+                    case 2:
+                        product = "Coffee";
+                        break;
+                    case 3:
+                        product = "Nescafe";
+                        break;
+                    case 4:
+                        product = "Sahlab";
+                        break;
+                    case 5:
+                        product = "Sahlab nuts";
+                        break;
+                    case 6:
+                        product = "Anise";
+                        break;
+                    case 7:
+                        product = "Mango Drink";
+                        break;
+                    case 8:
+                        product = "Grape Drink";
+                        break;
+                    case 9:
+                        product = "Tea and Milk";
+                        break;
+                    case 10:
+                        product = "Pepsi - Cola  Drink";
+                        break;
+                    case 11:
+                        product = "Shesha Fruits";
+                        break;
+                    case 12:
+                        product = "Shesha";
+                        break;
+                    }
+
+                    float price;
+                    switch (productChoice)
+                    {
+                    case 1:
+                        price = 7.5;
+                        break;
+                    case 2:
+                        price = 15.0;
+                        break;
+                    case 3:
+                        price = 20.0;
+                        break;
+                    case 4:
+                        price = 20.0;
+                        break;
+                    case 5:
+                        price = 27.0;
+                        break;
+                    case 6:
+                        price = 15.0;
+                        break;
+                    case 7:
+                        price = 30.0;
+                        break;
+                    case 8:
+                        price = 20.0;
+                        break;
+                    case 9:
+                        price = 15.0;
+                        break;
+                    case 10:
+                        price = 15.0;
+                        break;
+                    case 11:
+                        price = 20.0;
+                        break;
+                    case 12:
+                        price = 10.0;
+                        break;
+                    }
+
+                    stack.push(product, price);
+                }
+                break;
+            }
+            case 2:
+            {
+                clearConsole();
+                stack.display();
+                waitForEnter();
+
+                break;
+            }
+            case 3:
+            {
+                clearConsole();
+                stack.popAll();
+
+                break;
+            }
+            case 4:
+            {
+                clearConsole();
+                stack.popLast();
+                break;
+            }
+            case 5:
+            {
+                clearConsole();
+                cout << "Exiting...\n";
+                break;
+            }
+            default:
+                cout << "Invalid choice. Please enter a number between 1 and 5.\n";
+            }
+        }
+        catch (const invalid_argument &e)
+        {
+            clearConsole();
+            cout << "Invalid choice. Please enter an integer.\n";
+            choice = -1;
+        }
+    } while (choice != 5);
+
+    return 0;
+}

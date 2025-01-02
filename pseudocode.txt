@@ -1,0 +1,148 @@
+this Program is Built for Running a Coffee-Shop Cashier System.
+
+
+Define constant MAX_ORDERS = 15
+
+Define function clearConsole():
+    Clear the console screen using system command 'cls'
+
+Define function waitForEnter():
+    Display message "Press Enter to continue..."
+    Flush the output buffer
+    Ignore remaining characters in the input buffer until newline character
+    Wait for user to press Enter
+    Call clearConsole()
+
+Define class Stack:
+    Define private attributes:
+        - orders: array of strings to store orders
+        - prices: array of floats to store prices
+        - numOrders: integer to track the number of orders
+    Define public attribute:
+        - totalPrice: float to store total price
+
+    Define constructor Stack():
+        Initialize numOrders to 0
+        Initialize totalPrice to 0.0
+        Initialize prices array with predefined prices
+
+    Define method push(order: string, price: float):
+        Call clearConsole()
+        If numOrders is equal to MAX_ORDERS:
+            Display message "Maximum orders reached. Cannot place more orders."
+            Return
+        Store order and price in respective arrays at index numOrders
+        Increment numOrders by 1
+        Add price to totalPrice
+        Display message " indicating successful order placement ."
+
+    Define method popLast():
+        Declare variables c, order, and price
+        Set order to the last order in orders array
+        Set price to the price corresponding to the last order
+        If numOrders is 0:
+            Display message "No orders to process."
+            Call waitForEnter()
+            Return an empty string
+        Prompt user if they want to delete the last order
+        If user confirms deletion:
+            Decrement numOrders by 1
+            Update order and price to the new last order and its price
+            Subtract price from totalPrice
+            Display message indicating successful deletion of last order
+            Call waitForEnter()
+        Else:
+            Display message "Nothing affects the orders"
+            Call waitForEnter()
+        Call clearConsole()
+        Return the deleted order
+
+    Define method popAll():
+        If numOrders is 0:
+            Display message "No orders to process."
+            Call waitForEnter()
+            Return
+        Declare variables c, order, and price
+        Prompt user if they want to delete all orders
+        If user confirms deletion:
+            Set numOrders to 0
+            Reset order and price
+            Set totalPrice to 0
+            Display message "All the orders have been deleted successfully."
+            Call waitForEnter()
+        Else:
+            Display message "Nothing affects the orders"
+            Call waitForEnter()
+
+    Define method isEmpty():
+        Return true if numOrders is 0, else false
+
+    Define method isFull():
+        Return true if numOrders is equal to MAX_ORDERS, else false
+
+    Define method display():
+        If numOrders is 0:
+            Display message "No orders to display."
+            Return
+        Display orders in reverse order along with totalPrice
+
+Define function main():
+    Create an instance of Stack called stack
+    Declare integer choice
+    Start a do-while loop:
+        Display menu options
+        Get user input for choice
+        Try to convert input to integer
+        Switch on choice:
+            CASE 1:
+                    Clear console
+                    WHILE true
+                        Display menu of products and prices
+                        Prompt user to select product or finish order
+                        Read user input for product choice
+                        Convert product choice to integer
+
+                        IF product choice is 0 THEN
+                            Clear console
+                            BREAK loop
+                        END IF
+
+                        IF product choice is not between 1 and 12 THEN
+                            Clear console
+                            Display "Invalid product choice" message
+                            CONTINUE loop
+                        END IF
+
+                        Get product name and price based on product choice
+                        Add product to order stack
+                    END WHILE
+                    BREAK
+                CASE 2:
+                    Clear console
+                    Display current orders and total price
+                    Wait for user to press Enter
+                    BREAK
+                CASE 3:
+                    Clear console
+                    Remove all orders from stack
+                    BREAK
+                CASE 4:
+                    Clear console
+                    Remove last order from stack
+                    BREAK
+                CASE 5:
+                    Clear console
+                    Display "Exiting..." message
+                    BREAK
+                DEFAULT:
+                    Display "Invalid choice. Please enter a number between 1 and 5." message
+            END SWITCH
+        CATCH invalid_argument exception
+            Clear console
+            Display "Invalid choice. Please enter an integer." message
+            Set choice to -1
+        END TRY
+
+    WHILE choice is not equal to 5
+
+END
